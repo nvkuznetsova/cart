@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop cart</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="main-header">
+    <div class="container">
+      <div class="col-md-12" id="cart-header"><h1>Корзина покупок</h1></div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row" id="productList">
+      <div class="col-md-9">
+        <section id="product">
+            <ul class="clear">
+                <li id="product-1" data-price="2000">
+                  <img src="images/img1.jpg" alt="Картинка" draggable="false">
+                  <span class="name">Футболка с длинным рукавом</span>
+                  <p>Цена: 2000 руб</p>
+                </li>
+                <li id="product-2" data-price="1500">
+                        <img src="images/img2.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Футболка Железный человек</span>
+                        <p>Цена: 1500 руб</p>
+                </li>
+                <li id="product-3" data-price="1000">
+                        <img src="images/3.png" alt="Картинка" draggable="false">
+                        <span class="name">Футболка Дэдпул</span>
+                        <p>Цена: 1000 руб</p>
+                </li>
+                <li id="product-4" data-price="1000">
+                        <img src="images/4.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Футболка Мстители</span>
+                        <p>Цена: 1000 руб</p>
+                </li>
+                <li id="product-5" data-price="700">
+                        <img src="images/5.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Кружка Халк</span>
+                        <p>Цена: 700 руб</p>
+                </li>
+                <li id="product-6" data-price="700">
+                        <img src="images/6.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Кружка Каратель</span>
+                        <p>Цена: 700 руб</p>
+                </li>
+                <li id="product-7" data-price="700">
+                        <img src="images/7.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Кружка Железный человек</span>
+                        <p>Цена: 700 руб</p>
+                </li>
+                <li id="product-8" data-price="700">
+                        <img src="images/8.jpg" alt="Картинка" draggable="false">
+                        <span class="name">Кружка Вижн</span>
+                        <p>Цена: 700 руб</p>
+                </li>
+            </ul>
+      </section>
+      </div>
+
+      <div class="col-md-3">
+        <aside id="cart">
+            <div class="basket">
+                <div class="basket_list">
+                  <div class="cartHead">
+                    Корзина
+                  </div>
+                    <div class="head">
+                        <span class="name">Наименование</span>
+                        <span class="count">Кол-во</span>
+                    </div>
+                    <ul>
+                    </ul>
+                    <div id="total" sum="0">Сумма: 0</div>
+                </div>
+            </div>
+        </aside>
+
+
+        <aside id="limit">
+          <div class="basket">
+              <div class="basket_list">
+                  <div class="head">
+                      <span class="name">Введите лимит средств (руб)</span>
+                  </div>
+                  <div class="bottom">
+                    <input id="limitInput" class="form-control form-control-md" type="text" name="limit" value="1000">
+                    <button id="submit" type="button" class="btn btn-primary">Submit</button>
+                  </div>
+                  <div id="credit" sum="5000">Ваш кредит: 5000 рублей.</div>
+              </div>
+          </div>
+        </aside>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/script.js" charset="utf-8"></script>
+
+</body>
+</html>
