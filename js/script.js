@@ -72,13 +72,40 @@ function addEvent(elem, event, delegate ) {
         elem.addEventListener(event, delegate, false);
 }
 
-//изменение состояния документа
+
 addEvent(document, 'readystatechange', function() {
     if ( document.readyState !== "complete" )
         return true;
 
   const items = document.querySelectorAll("#product ul li");
   const but = document.querySelector("#submit");
+  const myEvent = new CustomEvent('checkCredit');
+
+  function onCheckCredit(event) {
+    let credit = +document.querySelector("#limit #credit").getAttribute("sum");
+    let total = +document.querySelector("#cart #total").getAttribute("sum");
+
+    if (credit <= 0) {
+      document.querySelector("#limit #credit").textContent = "Кредит должен быть положительным!";
+      document.querySelector("#limit #limitInput").focus();
+    } else {
+      items.forEach((item, i) => {
+        let sub_total = +item.getAttribute("data-price");
+        if (total+sub_total > credit) {
+          item.setAttribute("draggable", "false");
+          item.classList.add('dragFalse');
+          i++;
+          if (i == items.length) {
+            alert('Больше в корзину ничего не добавить! Пополните кредит или удалите товар!');
+            document.querySelector("#limit #limitInput").focus();
+          }
+        } else {
+          item.setAttribute("draggable", "true");
+          item.classList.remove('dragFalse');
+        }
+      });
+    }
+  }
 
   function onDrop(event){
     if(event.preventDefault) event.preventDefault();
@@ -87,40 +114,23 @@ addEvent(document, 'readystatechange', function() {
 
     let id = event.dataTransfer.getData("Text");
     let item = document.getElementById(id);
-
     let exists = document.querySelectorAll("#cart .basket li[data-id='" + id + "']");
-    let credit = +document.querySelector("#limit #credit").getAttribute("sum");
-    console.log(credit);
-    let total = +document.querySelector("#cart #total").getAttribute("sum");
-    let sub_total = +item.getAttribute("data-price");
-    console.log(total+sub_total);
 
-    if (credit <= 0) {
-      document.querySelector("#limit #credit").textContent = "Кредит должен быть положительным!";
-      document.querySelector("#limit #limitInput").focus();
-      cartModule.updateCart();
-    } else if (total >= credit) {
-      alert('Вы превысили кредит!');
-      for (let i of items) {
-        i.setAttribute("draggable", "false");
-        i.classList.add('dragFalse');
-      };
-    } else if (total+sub_total > credit) {
-      alert('Вы превышаете кредит!');
-      document.querySelector("#limit #limitInput").focus();
-    }
-    else if(exists.length > 0){
+    if(exists.length > 0){
         cartModule.updateItem(exists[0]);
     } else {
         cartModule.addItem(item, id);
     }
 
+    let deleteButs = document.querySelectorAll('.basket ul li span.delete');
+    deleteButs.forEach((but) => {addEvent(but, 'click', onClickDelete);});
+
     document.querySelector("#cart .basket_list").classList.remove('activeCart');
     cartModule.updateCart();
+    setTimeout(() => cart.dispatchEvent(myEvent), 100);
     return false;
 }
 
-//останавливает стандартное поведение dragover и dragenter
 function onDragOver(event){
   if(event.preventDefault) event.preventDefault();
   if (event.stopPropagation) event.stopPropagation();
@@ -135,31 +145,20 @@ function onDragEnd(event){
   else event.cancelBubble = true;
 
   document.querySelector("#cart .basket_list").classList.remove('activeCart');
-
   return false;
 }
 
-function onClick(event) {
-      let item = document.querySelector("#cart .basket ul li[data-id]");
+function onClickDelete(event) {
+      let item = this.parentElement;
       cartModule.deleteItem(item);
       cartModule.updateCart();
-
-      let credit = +document.querySelector("#limit #credit").getAttribute("sum");
-      let total = +document.querySelector("#cart #total").getAttribute("sum");
-      if (credit >= total) {
-        for (let i of items) {
-          i.setAttribute("draggable", "true");
-          i.classList.remove('dragFalse');
-        };
-        document.querySelector("#limit #credit").textContent = `Ваш кредит: ${credit} рублей.`;
-      }
+      cart.dispatchEvent(myEvent);
 }
 
 addEvent(cart, 'drop', onDrop);
 addEvent(cart, 'dragover', onDragOver);
-addEvent(cart, 'click', onClick);
+addEvent(cart, 'checkCredit', onCheckCredit);
 
-//эффекты для перетаскивания
 function onDrag(event){
   event.dataTransfer.effectAllowed = "move";
   event.dataTransfer.dropEffect = "move";
@@ -172,16 +171,10 @@ function onDrag(event){
 function onButClick(){
   const input = +document.querySelector('#limitInput').value;
   let credit = +document.querySelector("#limit #credit").getAttribute("sum");
-  let total = +document.querySelector("#cart #total").getAttribute("sum");
   credit += input;
   document.querySelector("#limit #credit").textContent = `Ваш кредит: ${credit} рублей.`;
   document.querySelector("#limit #credit").setAttribute('sum', credit);
-  if (credit >= total) {
-    for (let i of items) {
-      i.setAttribute("draggable", "true");
-      i.classList.remove('dragFalse');
-    };
-  }
+  cart.dispatchEvent(myEvent);
 }
 
 addEvent(but, 'click', onButClick);
