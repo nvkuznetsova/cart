@@ -124,7 +124,7 @@ li { list-style: none }
 .basket ul li span.name {
     display: block;
     float: left;
-    width: 40%;
+    width: 50%;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -134,7 +134,7 @@ li { list-style: none }
 .basket ul li span.sub-total {
     display: block;
     float: left;
-    width: 35%;
+    width: 30%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -145,7 +145,7 @@ li { list-style: none }
 .basket ul li span.delete {
     float: left;
     margin: 3px 2px 0 0;
-    width: 25px;
+    width: 20px;
     line-height: 20px;
     text-align: center;
     border: 0;
@@ -156,6 +156,7 @@ li { list-style: none }
 .basket ul li span.delete {
     margin-left: 3px;
     background-color: #CC0000;
+    cursor: pointer;
 }
 
 .basket ul li span.delete:hover {
@@ -165,7 +166,11 @@ li { list-style: none }
 
 .activeCart {
   border: 2px dotted #A52A2A;
-  background: #ffa0a3;
+  background-color: rgba(204, 0, 0, .3) !important;
+}
+
+.activeCredit {
+   border: 4px double #2C75FF;
 }
 
 .dragFalse {

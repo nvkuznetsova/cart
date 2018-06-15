@@ -1,6 +1,6 @@
 const cartModule = (function(){
 
-  let cart = document.querySelectorAll("#cart .basket ul")[0];
+  let cart = document.querySelector("#cart .basket ul");
 
   return {
     updateCart: function() {
@@ -12,7 +12,6 @@ const cartModule = (function(){
 
           let sub_total = parseFloat(num * parseFloat(price));
           item.querySelector("span.sub-total").innerHTML = sub_total.toFixed(2)+' р';
-
           total += sub_total;
       }
 
@@ -31,20 +30,19 @@ const cartModule = (function(){
       clone.removeChild(p);
       clone.removeAttribute('id');
 
-      let fragment = document.createElement('span');
-      fragment.setAttribute('class', 'sub-total');
-      clone.appendChild(fragment);
+      let elem = document.createElement('span');
+      elem.setAttribute('class', 'sub-total');
+      clone.appendChild(elem);
 
-      fragment = document.createElement('span');
-      fragment.setAttribute('class', 'count');
-      fragment.innerHTML = '1';
-      clone.appendChild(fragment);
+      elem = document.createElement('span');
+      elem.setAttribute('class', 'count');
+      elem.innerHTML = '1';
+      clone.appendChild(elem);
 
-
-      fragment = document.createElement('span');
-      fragment.setAttribute('class', 'delete');
-      fragment.innerHTML = 'X';
-      clone.appendChild(fragment);
+      elem = document.createElement('span');
+      elem.setAttribute('class', 'delete');
+      elem.innerHTML = 'X';
+      clone.appendChild(elem);
       cart.appendChild(clone);
     },
 
@@ -63,13 +61,13 @@ const cartModule = (function(){
 
 }());
 
-//события
+//--------------события--------------------
 
-function addEvent(elem, event, delegate ) {
-    if (typeof (window.event) != 'undefined' && elem.attachEvent)
-        elem.attachEvent('on' + event, delegate);
+function addEvent(el, event, func ) {
+    if (typeof (window.event) != 'undefined' && el.attachEvent)
+        el.attachEvent('on' + event, func);
     else
-        elem.addEventListener(event, delegate, false);
+        el.addEventListener(event, func, false);
 }
 
 
@@ -98,10 +96,12 @@ addEvent(document, 'readystatechange', function() {
           if (i == items.length) {
             alert('Больше в корзину ничего не добавить! Пополните кредит или удалите товар!');
             document.querySelector("#limit #limitInput").focus();
+            document.querySelector("#limit .basket_list").classList.add('activeCredit');
           }
         } else {
           item.setAttribute("draggable", "true");
           item.classList.remove('dragFalse');
+          document.querySelector("#limit .basket_list").classList.remove('activeCredit');
         }
       });
     }
